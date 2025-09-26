@@ -1,0 +1,83 @@
+{
+  "company": {
+    "name": "Kan-Guroo",
+    "website": "https://www.kan-guroo.com",
+    "description": "Kan-Guroo is an international education platform that helps students discover exchange programs and create a successful future.",
+    "mission": "To help young people receive the best education in the world’s leading educational institutions and develop their potential on an international level.",
+    "vision": "We help students become global citizens and gain international experience.",
+    "values": {
+      "innovation": "We use modern approaches and technologies to achieve the best results.",
+      "partnership": "We collaborate with leading educational institutions around the world.",
+      "growth": "We help students discover and develop their potential."
+    },
+    "team": [
+      {
+        "name": "Otari Melanashvili",
+        "role": "Co-Founder & CEO"
+      },
+      {
+        "name": "Saba Gelashvili",
+        "role": "Co-Founder"
+      },
+      {
+        "name": "Lasha Bevia",
+        "role": "Co-Founder"
+      }
+    ],
+    "programs": {
+      "school_exchange": [
+        {
+          "name": "High School USA",
+          "description": "1-year exchange program in U.S. public schools",
+          "url": "https://calendly.com/kan-guroo/15min"
+        },
+        {
+          "name": "High School Europe",
+          "description": "Exchange programs in European countries",
+          "url": "https://calendly.com/kan-guroo/15min"
+        }
+      ],
+      "summer_schools": [
+        {
+          "name": "Summer School",
+          "description": "Summer schools in various countries worldwide"
+        }
+      ],
+      "university_programs": [
+        {
+          "name": "Bachelor Abroad",
+          "description": "Undergraduate programs in top global universities"
+        },
+        {
+          "name": "Master Abroad",
+          "description": "Graduate programs in top global universities"
+        },
+        {
+          "name": "PhD Abroad",
+          "description": "Doctoral programs in top global universities"
+        }
+      ],
+      "language_courses": [
+        {
+          "name": "English Language Courses",
+          "description": "Study English in English-speaking countries",
+          "url": "https://calendly.com/kan-guroo/15min"
+        },
+        {
+          "name": "German Language Courses",
+          "description": "Study German in Germany, Austria, and Switzerland",
+          "url": "https://calendly.com/kan-guroo/15min"
+        },
+        {
+          "name": "Other Language Courses",
+          "description": "Learn various languages in different countries"
+        }
+      ]
+    },
+    "contact": {
+      "phone": "+995 577 30 25 25",
+      "email": "info@kan-guroo.com"
+    },
+    "copyright": "© 2025 Kan-guroo.com All Rights Reserved"
+  }
+}
