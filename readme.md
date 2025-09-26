@@ -1,15 +1,33 @@
 # AI 3D Avatar Chat System - Complete Documentation
-Back and AI generation - Giga Ninidze
-front and lipsync - Luka Gobechia
-## 🎯 Overview
+
+## 👥 Contributors
+- **Frontend and lipsync** - Luka Gobechia
+- **Backend and AI generation** - Giga Ninidze
 
 
-cd backend
+## 🚀 Quick Start
+
+### 1. Backend Setup
+Add `.env` file in the backend folder with environmental variables:
+```
+GEMINI_API_KEY=your_gemini_api_key
+ELEVENLABS_API_KEY=your_elevenlabs_api_key
+ELEVENLABS_VOICE_ID=fq1SdXsX6OokE10pJ4Xw
+```
+
+Then run:
+```bash
+cd Backend
 python start_server.py
+```
 
-
+### 2. Frontend Setup
+```bash
 cd AI-3DAvatar
-npm run dev
+npm run build
+```
+
+## 🎯 Overview
 
 
 This is a real-time 3D avatar chat system that combines AI responses (Gemini), text-to-speech (ElevenLabs), and real-time lip-sync animation using the `wawa-lipsync` library. The system provides a conversational AI experience with a 3D avatar that speaks and animates in real-time.
