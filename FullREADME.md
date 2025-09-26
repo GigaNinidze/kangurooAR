@@ -1,5 +1,6 @@
 # AI 3D Avatar Chat System - Complete Documentation
-
+Back and AI generation - Giga Ninidze
+front and lipsync - Luka Gobechia
 ## 🎯 Overview
 
 This is a real-time 3D avatar chat system that combines AI responses (Gemini), text-to-speech (ElevenLabs), and real-time lip-sync animation using the `wawa-lipsync` library. The system provides a conversational AI experience with a 3D avatar that speaks and animates in real-time.
