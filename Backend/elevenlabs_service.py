@@ -9,10 +9,11 @@ class ElevenLabsService:
     def __init__(self, api_key: str, voice_id: Optional[str] = None):
         """Initialize ElevenLabs service"""
         self.api_key = api_key
+        # Using a voice that works well with Georgian language
         self.voice_id = voice_id or "pNInz6obpgDQGcFmaJgB"  # Default voice if not provided
         self.base_url = "https://api.elevenlabs.io/v1"
         
-        print(f"ElevenLabs service initialized with voice ID: {self.voice_id}")
+        print(f"ElevenLabs service initialized with voice ID: {self.voice_id} using V3 model")
     
     async def generate_audio(self, text: str) -> str:
         """Generate audio from text using ElevenLabs"""
@@ -33,7 +34,7 @@ class ElevenLabsService:
             
             data = {
                 "text": text,
-                "model_id": "eleven_turbo_v2_5",  # Fast model
+                "model_id": "eleven_v3",  # V3 model for Georgian support
                 "voice_settings": {
                     "stability": 0.5,
                     "similarity_boost": 0.5,
@@ -95,7 +96,7 @@ class ElevenLabsService:
         """Get current voice information"""
         return {
             "voice_id": self.voice_id,
-            "model": "eleven_turbo_v2_5",
+            "model": "eleven_v3",
             "stability": 0.5,
             "similarity_boost": 0.5
         }

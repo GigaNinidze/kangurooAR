@@ -6,7 +6,7 @@ This backend provides AI-powered chat functionality for the 3D Avatar applicatio
 
 - **Text Generation**: Google Gemini 1.5 Flash for fast responses
 - **Voice Synthesis**: ElevenLabs Turbo v2.5 for high-quality audio generation
-- **Company Context**: Uses Company_data.json for Kan-Guroo specific responses
+- **Company Context**: Built-in Kan-Guroo specific responses
 - **Performance**: Target <4 seconds total response time
 - **Security**: API keys stored securely on server-side
 
@@ -66,12 +66,7 @@ python test_backend.py
 
 ## Company Context
 
-The AI is configured with Kan-Guroo company information:
-- Company details and mission
-- Available programs (exchange, summer schools, university programs)
-- Team information
-- Contact details
-- FAQ responses
+The AI is configured with built-in Kan-Guroo company information for tech support responses.
 
 ## Architecture
 
