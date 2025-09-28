@@ -4,7 +4,6 @@
 - **Frontend and lipsync** - Luka Gobechia
 - **Backend and AI generation** - Giga Ninidze
 
-
 ## 🚀 Quick Start
 
 ### 1. Backend Setup
@@ -26,6 +25,41 @@ python start_server.py
 cd AI-3DAvatar
 npm run build
 ```
+
+### 3. Session Analysis (NEW!)
+Analyze customer support sessions for insights:
+```bash
+cd Backend/analysis
+python run_analysis.py
+```
+
+## 📊 Session Analysis & Insights
+
+### 🔍 AI-Powered Session Evaluation
+The system now includes comprehensive session analysis capabilities:
+
+- **Automatic Session Saving**: All customer interactions are automatically saved with timestamps
+- **AI Quality Analysis**: Each session is evaluated using Gemini AI for quality metrics
+- **Performance Insights**: Track resolution rates, customer satisfaction, and communication quality
+- **Improvement Recommendations**: Get actionable insights for service enhancement
+
+### 📈 Analysis Features
+- **Resolution Tracking**: Monitor which issues are successfully resolved
+- **Customer Sentiment**: Analyze customer satisfaction levels
+- **Communication Quality**: Evaluate response effectiveness
+- **Troubleshooting Analysis**: Assess problem-solving approaches
+- **Performance Metrics**: Generate comprehensive reports
+
+### 🎯 Key Metrics Analyzed
+- Overall session rating (1-10)
+- Issue resolution status
+- Customer satisfaction levels
+- Response time quality
+- Troubleshooting effectiveness
+- Communication quality
+- Customer sentiment analysis
+- Escalation needs
+- Improvement suggestions
 
 ## 🎯 Overview
 
@@ -74,8 +108,12 @@ lukaavatar/
 │   ├── app.py                   # Main Flask application
 │   ├── gemini_service.py       # Gemini AI integration
 │   ├── elevenlabs_service.py    # ElevenLabs TTS integration
-│   ├── mock_gemini_service.py   # Mock service for testing
-│   ├── Company_data.json       # Company context data
+│   ├── analysis/                # Session Analysis Module (NEW!)
+│   │   ├── session_analyzer.py  # AI-powered session evaluation
+│   │   ├── batch_processor.py # Batch processing for large datasets
+│   │   ├── run_analysis.py      # Simple analysis runner
+│   │   └── reports/             # Generated analysis reports
+│   ├── sessions/                # Saved customer sessions
 │   ├── requirements.txt         # Python dependencies
 │   ├── start_server.py         # Server startup script
 │   └── static/audio/           # Generated audio files
@@ -171,6 +209,42 @@ npm run dev
 - Predefined responses for testing
 - Same interface as real services
 - Enables development without API costs
+
+### Session Analysis Module (`analysis/`)
+
+**Purpose**: AI-powered evaluation of customer support sessions for quality insights.
+
+**Key Features**:
+- **Automatic Session Saving**: All conversations saved with timestamps
+- **AI Quality Analysis**: Gemini AI evaluates session effectiveness
+- **Comprehensive Metrics**: Resolution rates, satisfaction, communication quality
+- **Batch Processing**: Handle large numbers of sessions efficiently
+- **JSON Reports**: Detailed analysis reports with actionable insights
+
+**Analysis Components**:
+- `session_analyzer.py` - Core analysis engine with AI evaluation
+- `batch_processor.py` - Efficient batch processing for large datasets
+- `run_analysis.py` - Simple command-line interface
+- `reports/` - Generated analysis reports and insights
+
+**Analysis Metrics**:
+- Overall session rating (1-10)
+- Issue resolution status
+- Customer satisfaction levels
+- Response time quality
+- Troubleshooting effectiveness
+- Communication quality
+- Customer sentiment analysis
+- Escalation needs
+- Improvement suggestions
+
+**Usage**:
+```bash
+cd Backend/analysis
+python run_analysis.py              # Single analysis
+python run_analysis.py --batch      # Batch processing
+python test_analysis.py             # Test functionality
+```
 
 ## 🎨 Frontend Components
 

@@ -1,0 +1,63 @@
+{
+  "generated_at": "2025-09-28T12:51:42.879938",
+  "total_sessions": 2,
+  "analyses": [
+    {
+      "session_id": "user_1759055226334_jhdx75tcz",
+      "overall_rating": "9",
+      "issue_resolved": true,
+      "customer_satisfaction": "high",
+      "response_time_quality": "fast",
+      "troubleshooting_effectiveness": "effective",
+      "communication_quality": "excellent",
+      "key_issues": [
+        "ინტერნეტის პრობლემა"
+      ],
+      "resolution_steps": [
+        "Customer reported internet issue.",
+        "Bot offered assistance.",
+        "Customer confirmed the issue was resolved."
+      ],
+      "customer_sentiment": "positive",
+      "escalation_needed": false,
+      "improvement_suggestions": [
+        "While the issue was resolved quickly, the specific troubleshooting steps taken by the bot are not detailed in the transcript. Capturing these would allow for more granular analysis of troubleshooting effectiveness in future sessions.",
+        "For very short and successful interactions like this, consider a quick post-resolution confirmation prompt to gather explicit feedback on satisfaction, e.g., 'Was this solution helpful?'"
+      ],
+      "session_summary": "The customer initiated the chat reporting an internet problem. The bot responded promptly and offered assistance. Within 23 seconds, the customer indicated that everything was working and expressed gratitude. The session ended with the bot thanking the customer. The issue was resolved quickly and effectively with positive customer sentiment.",
+      "filepath": "../sessions/user_1759055226334_jhdx75tcz.txt"
+    },
+    {
+      "session_id": "user_1759055272494_d1zuho5m9",
+      "overall_rating": "9",
+      "issue_resolved": true,
+      "customer_satisfaction": "high",
+      "response_time_quality": "fast",
+      "troubleshooting_effectiveness": "effective",
+      "communication_quality": "excellent",
+      "key_issues": [
+        "phone connection issues"
+      ],
+      "resolution_steps": [
+        "Checked SIM card presence",
+        "Inquired about signal strength",
+        "Advised to restart the phone"
+      ],
+      "customer_sentiment": "positive",
+      "escalation_needed": false,
+      "improvement_suggestions": [
+        "While the session was successful, for future interactions, consider asking for the specific nature of the 'phone connection issues' (e.g., no calls, no data, poor call quality) to potentially tailor troubleshooting steps more precisely.",
+        "The bot could offer to save troubleshooting steps for the user's reference or provide a link to a troubleshooting guide for future use, even though this specific issue was resolved quickly."
+      ],
+      "session_summary": "The customer reported phone connection issues. The bot initiated troubleshooting by verifying the SIM card and signal strength. Upon user confirmation of 2 bars, the bot advised restarting the phone. The customer confirmed that restarting the phone resolved the issue, leading to a positive and quick resolution.",
+      "filepath": "../sessions/user_1759055272494_d1zuho5m9.txt"
+    }
+  ],
+  "summary": {
+    "total_sessions": 2,
+    "resolved_sessions": 2,
+    "resolution_rate": "100.0%",
+    "high_satisfaction_sessions": 2,
+    "satisfaction_rate": "100.0%"
+  }
+}

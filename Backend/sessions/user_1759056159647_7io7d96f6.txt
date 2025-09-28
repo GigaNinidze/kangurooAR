@@ -1,0 +1,15 @@
+Session ID: user_1759056159647_7io7d96f6
+Language: georgian
+Start Time: 2025-09-28T12:52:18.259532
+End Time: 2025-09-28T12:52:18.857681
+Duration: 0m 0s
+Issue Type: general
+Resolution Status: in_progress
+Troubleshooting Attempts: 0
+Failed Attempts: 0
+Escalation Triggered: False
+
+=== CONVERSATION HISTORY ===
+
+[2025-09-28T12:52:18.857396] User: გამარჯობა! ტელეფონის პრობლემები მაქვს
+[2025-09-28T12:52:18.857396] Bot: გამარჯობა! გმადლობთ, რომ მოგვმართეთ. გთხოვთ, დააკონკრეტოთ, რა სახის პრობლემა გაქვთ ტელეფონთან?
