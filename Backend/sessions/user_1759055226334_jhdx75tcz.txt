@@ -1,0 +1,20 @@
+Session ID: user_1759055226334_jhdx75tcz
+Language: georgian
+Start Time: 2025-09-28T12:27:15.334167
+End Time: 2025-09-28T12:27:39.647418
+Duration: 0m 24s
+Issue Type: general
+Resolution Status: in_progress
+Troubleshooting Attempts: 0
+Failed Attempts: 0
+Escalation Triggered: False
+
+=== CONVERSATION HISTORY ===
+
+[2025-09-28T12:27:16.316936] User: ინტერნეტის პრობლემა მაქვს
+[2025-09-28T12:27:16.316936] Bot: გამარჯობა! მოდით, ერთად მოვაგვაროთ თქვენი ინტერნეტის პრობლემა.
+
+1.  გადატვირთეთ როუტერი: გათიშეთ 30 წამით, შემდეგ ჩართეთ.
+
+[2025-09-28T12:27:39.647379] User: ყველაფერმა იმუშავა! მადლობა! 
+[2025-09-28T12:27:39.647379] Bot: მადლობა, რომ დაგვიკავშირდით! სიამოვნებით დაგეხმარებით.

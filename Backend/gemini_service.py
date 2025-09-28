@@ -228,11 +228,86 @@ User message: """
             self.user_sessions[session_id] = TechSupportSession(session_id)
         return self.user_sessions[session_id]
     
+    def should_save_session(self, user_message: str, ai_response: str) -> bool:
+        """Check if session should be saved based on conversation indicators"""
+        user_msg_lower = user_message.lower()
+        ai_response_lower = ai_response.lower()
+        
+        # Check for session end indicators
+        end_indicators = [
+            'thank you', 'thanks', 'მადლობა', 'მადლობთ',
+            'goodbye', 'bye', 'ნახვამდის', 'წარმატებები',
+            'resolved', 'fixed', 'working', 'მუშაობს',
+            'no more questions', 'that\'s all', 'სხვა კითხვა არ მაქვს'
+        ]
+        
+        return any(indicator in user_msg_lower or indicator in ai_response_lower 
+                  for indicator in end_indicators)
+
+    def save_session_to_file(self, session: TechSupportSession, language: str = "georgian"):
+        """Save session chat history to a text file with timestamps"""
+        try:
+            import os
+            from datetime import datetime
+            
+            # Create sessions directory if it doesn't exist
+            sessions_dir = "sessions"
+            os.makedirs(sessions_dir, exist_ok=True)
+            
+            # Calculate session duration
+            duration = (session.last_activity - session.created_at).total_seconds()
+            duration_str = f"{int(duration // 60)}m {int(duration % 60)}s"
+            
+            # Create file content
+            file_content = f"""Session ID: {session.session_id}
+Language: {language}
+Start Time: {session.created_at.isoformat()}
+End Time: {session.last_activity.isoformat()}
+Duration: {duration_str}
+Issue Type: {session.issue_type}
+Resolution Status: {session.resolution_status}
+Troubleshooting Attempts: {session.troubleshooting_attempts}
+Failed Attempts: {session.failed_attempts}
+Escalation Triggered: {session.escalation_triggered}
+
+=== CONVERSATION HISTORY ===
+"""
+            
+            # Add conversation history with timestamps
+            for i, msg in enumerate(session.conversation_history, 1):
+                file_content += f"\n[{msg['timestamp']}] User: {msg['user']}\n"
+                file_content += f"[{msg['timestamp']}] Bot: {msg['bot']}\n"
+            
+            # Save to file
+            filename = f"{session.session_id}.txt"
+            filepath = os.path.join(sessions_dir, filename)
+            
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(file_content)
+            
+            print(f"💾 Session saved to {filepath}")
+            return filepath
+            
+        except Exception as e:
+            print(f"Error saving session: {e}")
+            return None
+
     def cleanup_expired_sessions(self):
-        """Clean up expired sessions"""
+        """Clean up expired sessions and save them to files"""
         expired_sessions = [sid for sid, sess in self.user_sessions.items() if sess.is_expired()]
+        
         for sid in expired_sessions:
-            del self.user_sessions[sid]
+            session = self.user_sessions[sid]
+            try:
+                # Save session before deleting
+                print(f"💾 Saving expired session {sid}...")
+                self.save_session_to_file(session, "georgian")  # Default to Georgian
+            except Exception as e:
+                print(f"Error saving session {sid}: {e}")
+            finally:
+                # Always delete the session from memory
+                del self.user_sessions[sid]
+        
         print(f"🧹 Cleaned up {len(expired_sessions)} expired sessions")
     
     # Legacy method for backward compatibility

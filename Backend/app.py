@@ -85,6 +85,11 @@ def chat():
             # Add the exchange to session history
             session.add_message(user_message, ai_response)
             
+            # Check if session should be saved (conversation ended)
+            if gemini_service.should_save_session(user_message, ai_response):
+                print(f"💾 Conversation ended, saving session {session_id}...")
+                gemini_service.save_session_to_file(session, language)
+            
             # Step 2: Generate audio with ElevenLabs (using language-specific model)
             print("🎵 Generating audio...")
             audio_url = loop.run_until_complete(elevenlabs_service.generate_audio(ai_response, language))
@@ -125,6 +130,24 @@ def cleanup_sessions():
     try:
         gemini_service.cleanup_expired_sessions()
         return jsonify({'status': 'sessions cleaned up'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/save-session/<session_id>', methods=['POST'])
+def save_session(session_id):
+    """Manually save a specific session to file"""
+    try:
+        if session_id not in gemini_service.user_sessions:
+            return jsonify({'error': 'Session not found'}), 404
+        
+        session = gemini_service.user_sessions[session_id]
+        filepath = gemini_service.save_session_to_file(session, session.language if hasattr(session, 'language') else 'georgian')
+        
+        if filepath:
+            return jsonify({'status': 'session saved', 'filepath': filepath})
+        else:
+            return jsonify({'error': 'Failed to save session'}), 500
+            
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
