@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { lipsyncManager } from "../App"; // Make sure this is exported from App
 
-export const Chat = ({ audioRef, onVisemesChange }) => {
+export const Chat = ({ audioRef, onVisemesChange, selectedLanguage }) => {
   const [chatMessages, setChatMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
+  const [sessionId] = useState(() => `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const chatEndRef = useRef(null);
 
   // Auto-scroll on new messages
@@ -21,6 +22,7 @@ export const Chat = ({ audioRef, onVisemesChange }) => {
 
     const startTime = Date.now();
     console.log(`👤 User sent message [${new Date().toISOString()}]`);
+    console.log(`🆔 Session ID: ${sessionId}`);
     
     // Add user message
     setChatMessages((prev) => [...prev, { type: "user", text: userInput }]);
@@ -32,7 +34,11 @@ export const Chat = ({ audioRef, onVisemesChange }) => {
       const response = await fetch("http://localhost:3001/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: messageToSend }),
+        body: JSON.stringify({ 
+          message: messageToSend,
+          language: selectedLanguage,
+          session_id: sessionId
+        }),
       });
 
       const data = await response.json();
@@ -48,6 +54,8 @@ export const Chat = ({ audioRef, onVisemesChange }) => {
         // Use full URL for audio
         const fullAudioUrl = `http://localhost:3001${data.audioUrl}`;
         console.log("🎵 Setting audio source:", fullAudioUrl);
+        console.log("🎵 Language:", selectedLanguage);
+        console.log("🎵 Audio URL from backend:", data.audioUrl);
         
         // Set up audio event listeners
         const audio = audioRef.current;
@@ -56,13 +64,21 @@ export const Chat = ({ audioRef, onVisemesChange }) => {
           console.log("🔗 Audio ready, connecting to lipsync manager");
           console.log("🎵 Audio duration:", audio.duration);
           console.log("🎵 Audio readyState:", audio.readyState);
+          console.log("🎵 Audio src:", audio.src);
+          console.log("🎵 Audio currentTime:", audio.currentTime);
+          console.log("🎵 Audio networkState:", audio.networkState);
+          console.log("🎵 Audio buffered:", audio.buffered.length > 0 ? audio.buffered.end(0) : "No buffered data");
           
           lipsyncManager.connectAudio(audio);
           
           // Play the audio
           console.log("▶️ Playing audio");
+          console.log("🎵 Audio volume before play:", audio.volume);
+          console.log("🎵 Audio muted before play:", audio.muted);
           audio.play().then(() => {
             console.log("✅ Audio started playing successfully");
+            console.log("🎵 Audio volume after play:", audio.volume);
+            console.log("🎵 Audio muted after play:", audio.muted);
             console.log(`🎬 Animation started [${new Date().toISOString()}]`);
             const totalTime = Date.now() - startTime;
             console.log(`⏱️ Total pipeline time: ${totalTime}ms`);
@@ -73,18 +89,39 @@ export const Chat = ({ audioRef, onVisemesChange }) => {
         
         const handleError = (error) => {
           console.error("❌ Audio loading error:", error);
+          console.error("❌ Audio error details:", error.target.error);
+          console.error("❌ Audio src:", audio.src);
+          console.error("❌ Audio readyState:", audio.readyState);
         };
         
         const handleLoadStart = () => {
           console.log("📥 Audio loading started");
+          console.log("📥 Audio src:", audio.src);
+          console.log("📥 Audio readyState:", audio.readyState);
+          console.log("📥 Language:", selectedLanguage);
         };
         
         const handleLoadedData = () => {
           console.log("📊 Audio data loaded");
+          console.log("📊 Audio duration:", audio.duration);
+          console.log("📊 Audio readyState:", audio.readyState);
+          console.log("📊 Audio networkState:", audio.networkState);
         };
         
         const handlePlay = () => {
           console.log("▶️ Audio play event fired");
+          console.log("🎵 Audio is playing:", !audio.paused);
+          console.log("🎵 Audio currentTime:", audio.currentTime);
+          console.log("🎵 Audio volume:", audio.volume);
+          console.log("🎵 Audio muted:", audio.muted);
+        };
+        
+        const handleTimeUpdate = () => {
+          console.log("🎵 Audio time update:", audio.currentTime, "/", audio.duration);
+        };
+        
+        const handleEnded = () => {
+          console.log("🎵 Audio ended");
         };
         
         // Add event listeners
@@ -93,10 +130,24 @@ export const Chat = ({ audioRef, onVisemesChange }) => {
         audio.addEventListener('loadstart', handleLoadStart);
         audio.addEventListener('loadeddata', handleLoadedData);
         audio.addEventListener('play', handlePlay);
+        audio.addEventListener('timeupdate', handleTimeUpdate);
+        audio.addEventListener('ended', handleEnded);
         
         // Set the source (this will trigger loading)
         audio.src = fullAudioUrl;
+        console.log("🎵 Audio source set, calling load()");
         audio.load(); // Force reload
+        console.log("🎵 Audio load() called, readyState:", audio.readyState);
+        
+        // Add timeout to check audio loading status
+        setTimeout(() => {
+          console.log("🎵 Audio status after 2 seconds:");
+          console.log("🎵 ReadyState:", audio.readyState);
+          console.log("🎵 NetworkState:", audio.networkState);
+          console.log("🎵 Duration:", audio.duration);
+          console.log("🎵 Paused:", audio.paused);
+          console.log("🎵 Src:", audio.src);
+        }, 2000);
       }
 
       // Note: Visemes will be generated automatically by wawa-lipsync
@@ -134,14 +185,14 @@ export const Chat = ({ audioRef, onVisemesChange }) => {
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder="Ask me anything..."
+          placeholder={selectedLanguage === "georgian" ? "რა შემიძლია დაგეხმაროთ?" : "Ask me anything..."}
           className="border p-2 rounded flex-1"
         />
         <button
           onClick={sendMessage}
           className="bg-indigo-500 text-white px-4 py-2 rounded"
         >
-          Send
+          {selectedLanguage === "georgian" ? "გაგზავნა" : "Send"}
         </button>
       </div>
 

@@ -46,7 +46,7 @@ export class Lipsync {
   public viseme: VISEMES = VISEMES.sil;
   private audioContext: AudioContext;
   private analyser: AnalyserNode;
-  private dataArray: Uint8Array;
+  private dataArray: Uint8Array<ArrayBufferLike>;
   private history: Feature[];
   private historySize: number;
   private sampleRate: number;
@@ -117,7 +117,7 @@ export class Lipsync {
   }
 
   extractFeatures() {
-    this.analyser.getByteFrequencyData(this.dataArray);
+    this.analyser.getByteFrequencyData(this.dataArray as Uint8Array<ArrayBuffer>);
 
     // Convert frequency ranges to bin indices
     const bandEnergies = this.bands.map(({ start, end }) => {

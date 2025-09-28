@@ -13,9 +13,9 @@ class ElevenLabsService:
         self.voice_id = voice_id or "pNInz6obpgDQGcFmaJgB"  # Default voice if not provided
         self.base_url = "https://api.elevenlabs.io/v1"
         
-        print(f"ElevenLabs service initialized with voice ID: {self.voice_id} using V3 model")
+        print(f"ElevenLabs service initialized with voice ID: {self.voice_id} (dynamic model selection)")
     
-    async def generate_audio(self, text: str) -> str:
+    async def generate_audio(self, text: str, language: str = "georgian") -> str:
         """Generate audio from text using ElevenLabs"""
         start_time = time.time()
         
@@ -23,7 +23,12 @@ class ElevenLabsService:
             elevenlabs_start = time.time()
             print(f"🎵 ElevenLabs TTS started [{time.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3]}Z]")
             
-            # Use turbo model for speed
+            # Select model based on language
+            model_id = "eleven_v3" if language == "georgian" else "eleven_turbo_v2_5"
+            print(f"🎵 Using {model_id} model for {language} language")
+            print(f"🎵 Text to convert: {text[:100]}...")
+            print(f"🎵 Text length: {len(text)} characters")
+            
             url = f"{self.base_url}/text-to-speech/{self.voice_id}"
             
             headers = {
@@ -32,19 +37,34 @@ class ElevenLabsService:
                 "xi-api-key": self.api_key
             }
             
-            data = {
-                "text": text,
-                "model_id": "eleven_v3",  # V3 model for Georgian support
-                "voice_settings": {
-                    "stability": 0.5,
+            # Use different voice settings for Georgian vs English
+            if language == "georgian":
+                voice_settings = {
+                    "stability": 1.0,  # Robust stability for Georgian (valid value)
+                    "similarity_boost": 0.8,  # Higher similarity for Georgian
+                    "style": 0.0,
+                    "use_speaker_boost": True
+                }
+            else:
+                voice_settings = {
+                    "stability": 0.5,  # Natural stability for English
                     "similarity_boost": 0.5,
                     "style": 0.0,
                     "use_speaker_boost": True
                 }
+            
+            data = {
+                "text": text,
+                "model_id": model_id,
+                "voice_settings": voice_settings
             }
             
             async with aiohttp.ClientSession() as session:
                 async with session.post(url, json=data, headers=headers) as response:
+                    print(f"🎵 Response status: {response.status}")
+                    print(f"🎵 Response headers: {dict(response.headers)}")
+                    print(f"🎵 Content-Type: {response.headers.get('Content-Type', 'Not set')}")
+                    print(f"🎵 Content-Length: {response.headers.get('Content-Length', 'Not set')}")
                     if response.status == 200:
                         # Create audio directory if it doesn't exist
                         os.makedirs("static/audio", exist_ok=True)
@@ -55,13 +75,23 @@ class ElevenLabsService:
                         filepath = f"static/audio/{filename}"
                         
                         # Save audio file
+                        file_size = 0
                         async with aiofiles.open(filepath, 'wb') as f:
                             async for chunk in response.content.iter_chunked(8192):
                                 await f.write(chunk)
+                                file_size += len(chunk)
                         
                         # Log performance
                         elapsed_time = (time.time() - start_time) * 1000
                         print(f"✅ ElevenLabs TTS completed in {elapsed_time:.3f}ms")
+                        print(f"🎵 Audio file size: {file_size} bytes")
+                        print(f"🎵 Audio file path: {filepath}")
+                        
+                        # Check if file exists and is readable
+                        if os.path.exists(filepath):
+                            print(f"✅ Audio file exists and is accessible")
+                        else:
+                            print(f"❌ Audio file does not exist at {filepath}")
                         
                         # Return relative URL for frontend
                         return f"/static/audio/{filename}"

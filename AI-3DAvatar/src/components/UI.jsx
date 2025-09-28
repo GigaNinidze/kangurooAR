@@ -3,6 +3,7 @@ import { Suspense, useEffect, useState, useRef } from "react";
 import { Experience } from "./Experience";
 import { Visualizer } from "./Visualizer";
 import { Chat } from "./Chat";
+import { LanguageSelector } from "./LanguageSelector";
 
 
 
@@ -15,6 +16,7 @@ export const UI = () => {
   const audioRef = useRef(null);
   const [userInput, setUserInput] = useState("");
   const [currentVisemes, setCurrentVisemes] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState("georgian");
 
   useEffect(() => {
     // When hash in the url changes, update the href state
@@ -35,7 +37,11 @@ export const UI = () => {
     const response = await fetch("http://localhost:3001/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userInput }),
+      body: JSON.stringify({ 
+        message: userInput,
+        language: selectedLanguage,
+        session_id: `ui_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      }),
     });
 
     const data = await response.json();
@@ -60,22 +66,29 @@ export const UI = () => {
   return (
     <section className="flex flex-row overflow-hidden h-full w-full">
       <div className="p-10 lg:max-w-2xl overflow-y-auto">
-          <a
-            className="pointer-events-auto select-none opacity-0 animate-fade-in-down animation-delay-200 "
-            href="https://wawasensei.dev"
-            target="_blank"
-          >
-            <img
-              src="/images/wawasensei.png"
-              alt="Wawa Sensei logo"
-              className="w-20 h-20 object-contain"
+          <div className="flex items-center justify-between mb-6">
+            <a
+              className="pointer-events-auto select-none opacity-0 animate-fade-in-down animation-delay-200 "
+              href="https://wawasensei.dev"
+              target="_blank"
+            >
+              <img
+                src="/images/wawasensei.png"
+                alt="Wawa Sensei logo"
+                className="w-20 h-20 object-contain"
+              />
+            </a>
+            <LanguageSelector 
+              selectedLanguage={selectedLanguage}
+              onLanguageChange={setSelectedLanguage}
             />
-          </a>
+          </div>
           <Visualizer />
       </div>
       <Chat
         audioRef={audioRef}
         onVisemesChange={(visemes) => setCurrentVisemes(visemes)}
+        selectedLanguage={selectedLanguage}
       />
       <div className="flex-1 bg-gradient-to-b from-pink-400 to-pink-200 relative">
         <Canvas shadows camera={{ position: [12, 8, 26], fov: 30 }}>

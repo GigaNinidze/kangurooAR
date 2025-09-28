@@ -61,11 +61,13 @@ def chat():
         data = request.get_json()
         user_message = data.get('message', '')
         session_id = data.get('session_id', 'default_session')
+        language = data.get('language', 'georgian')  # Default to Georgian
         
         if not user_message:
             return jsonify({'error': 'No message provided'}), 400
         
-        print(f"🤖 Processing message for session {session_id}: {user_message[:50]}...")
+        print(f"🤖 Processing message for session {session_id} in {language}: {user_message[:50]}...")
+        print(f"🆔 Session ID: {session_id}")
         
         # Run async functions in event loop
         loop = asyncio.new_event_loop()
@@ -75,17 +77,17 @@ def chat():
             # Get or create session
             session = gemini_service.get_or_create_session(session_id)
             
-            # Step 1: Generate AI response with Gemini (using session context)
+            # Step 1: Generate AI response with Gemini (using session context and language)
             print("📝 Generating AI response...")
-            ai_response = loop.run_until_complete(gemini_service.generate_tech_support_response(user_message, session))
+            ai_response = loop.run_until_complete(gemini_service.generate_tech_support_response(user_message, session, language))
             print(f"✅ AI Response: {ai_response}")
             
             # Add the exchange to session history
             session.add_message(user_message, ai_response)
             
-            # Step 2: Generate audio with ElevenLabs
+            # Step 2: Generate audio with ElevenLabs (using language-specific model)
             print("🎵 Generating audio...")
-            audio_url = loop.run_until_complete(elevenlabs_service.generate_audio(ai_response))
+            audio_url = loop.run_until_complete(elevenlabs_service.generate_audio(ai_response, language))
             print(f"✅ Audio generated: {audio_url}")
             
         finally:
